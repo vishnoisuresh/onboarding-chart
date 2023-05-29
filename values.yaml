@@ -1,0 +1,23 @@
+teams:
+  - name: team1
+    networkPolicy:
+      enabled: true
+    resourceQuota:
+      enabled: true
+      cpu: "4"
+      memory: 8Gi
+    projectRole: admin
+  - name: team2
+    networkPolicy:
+      enabled: true
+    resourceQuota:
+      enabled: true
+      cpu: "1"
+      memory: 2Gi
+    projectRole: edit
+  - name: team3
+    networkPolicy:
+      enabled: false
+    resourceQuota:
+      enabled: false
+

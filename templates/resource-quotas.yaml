@@ -1,0 +1,15 @@
+{{- range .Values.teams }}
+{{- if and (hasKey . "resourceQuota") (and (hasKey .resourceQuota "enabled") .resourceQuota.enabled) }}
+---
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: {{ .name }}-quota
+  namespace: {{ .name }}
+spec:
+  hard:
+    cpu: {{ .resourceQuota.cpu }}
+    memory: {{ .resourceQuota.memory }}
+{{- end }}
+{{- end }}
+
