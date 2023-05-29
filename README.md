@@ -1,6 +1,6 @@
 # Onboarding Chart
 
-This Helm chart deploys resources for multiple teams in a Kubernetes cluster. Each team can have different configurations for network policies, resource quotas, and role bindings.
+This Helm chart deploys resources for multiple teams in a cluster. Each team can have different configurations for network policies, resource quotas, and role bindings.
 ## Prerequisites
 
 - Kubernetes/OpenShift cluster
