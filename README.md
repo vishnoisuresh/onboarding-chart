@@ -15,7 +15,7 @@ Teams are defined in the `values.yaml` file. Each team has the following propert
   - `enabled`: A boolean value indicating whether resource quotas should be created for the team. When set to `true`, resource quotas will be created. When set to `false`, no resource quotas will be created.
   - `cpu`: The CPU limit for the team's resource quota.
   - `memory`: The memory limit for the team's resource quota.
-- `projectRole`: The role assigned to the team in the Kubernetes cluster. If not specified, the default role is `admin`.
+- `projectRole`: The role assigned to the team in the cluster. If not specified, the default role is `admin`.
 
 ```bash
 | Parameter                   | Description                                  | Default |
@@ -64,7 +64,7 @@ The following resources will be created for each team based on their configurati
 
 ### Namespace
 
-A Kubernetes namespace will be created for each team. The namespace name will be based on the team's `name` property.
+A namespace will be created for each team. The namespace name will be based on the team's `name` property.
 
 ### Network Policies
 
@@ -80,4 +80,4 @@ If the `resourceQuota.enabled` is set to `true` for a team, a resource quota wil
 
 ### Role Bindings
 
-A role binding will be created for each team, assigning them a role in the Kubernetes cluster. If the `projectRole` is not specified for a team, the default role assigned is `admin`. The role binding name will be `<team-name>-<project-role>-rolebinding`.
+A role binding will be created for each team, assigning them a role in the cluster. If the `projectRole` is not specified for a team, the default role assigned is `admin`. The role binding name will be `<team-name>-<project-role>-rolebinding`.
