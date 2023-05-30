@@ -10,6 +10,7 @@ This Helm chart deploys resources for multiple teams in a cluster. Each team can
 Teams are defined in the `values.yaml` file. Each team has the following properties:
 
 - `name`: The name of the team.
+- `namespace`: The name of the namespace to be generated.
 - `networkPolicy`: The configuration for network policies. It can be set to `enabled` or `disabled`. When set to `enabled`, network policies will be created for the team. When set to `disabled`, no network policies will be created.
 - `resourceQuota`: The configuration for resource quotas. It has the following properties:
   - `enabled`: A boolean value indicating whether resource quotas should be created for the team. When set to `true`, resource quotas will be created. When set to `false`, no resource quotas will be created.
@@ -22,6 +23,7 @@ Teams are defined in the `values.yaml` file. Each team has the following propert
 |-----------------------------|----------------------------------------------|---------|
 | teams                       | List of teams to create                      |   []    |
 | teams.name                  | Name of the team                             |         |
+| teams.namespace             | Name of the namespace to be created          |         |
 | teams.networkPolicy         | Network policy configuration for the team    |         |
 | teams.networkPolicy.enabled | True/False                                   | False   |
 | teams.resourceQuota         | Resource quota configuration for the team    |         |
@@ -36,23 +38,17 @@ To create a Teams Chart deployment with custom values, create a values.yaml file
 
 ```yaml
 teams:
-  - name: team1               < The name of the team
-    networkPolicy:            < Enabled or not. Creates default networkPolicies. Default = false
+  - name: team1                  < The name of the team
+    namespace: team-1-namespace  < Name of the namespace being created
+    networkPolicy:               < Enabled or not. Creates default networkPolicies. Default = false
       enabled: true
-    resourceQuota:            < Enabled or not. Creates resourceQuotas for the namespace. Default = false
+    resourceQuota:               < Enabled or not. Creates resourceQuotas for the namespace. Default = false
       enabled: true
       cpu: "4"
       memory: 8Gi
-    projectRole: admin        < ClusterRole assigned to the team. Default = admin
+    projectRole: admin           < ClusterRole assigned to the team. Default = admin
   - name: team2
-    networkPolicy:
-      enabled: true
-    resourceQuota:
-      enabled: true
-      cpu: "1"
-      memory: 2Gi
-    projectRole: edit
-  - name: team3
+    namespace: team-2-namespace
     networkPolicy:
       enabled: false
     resourceQuota:
@@ -64,7 +60,7 @@ The following resources will be created for each team based on their configurati
 
 ### Namespace
 
-A namespace will be created for each team. The namespace name will be based on the team's `name` property.
+A namespace will be created for each team. The namespace name will be based on the team's `namespace` property.
 
 ### Network Policies
 
