@@ -1,8 +1,9 @@
 {{- range .Values.teams }}
----
+{{- range .namespaces }}
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: {{ .namespace }}
+  name: {{ .name }}
+---
 {{- end }}
-
+{{- end }}

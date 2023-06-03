@@ -1,4 +1,4 @@
 apiVersion: v2
 name: onboarding
 description: A Helm chart for creating and setting up teams for k8s/OpenShift
-version: 0.1.0
+version: 0.2.0

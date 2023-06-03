@@ -1,26 +1,49 @@
 teams:
+# Team 1
   - name: team1
-    namespace: team-1-namespace
-    networkPolicy:
-      enabled: true
-    resourceQuota:
-      enabled: true
-      cpu: "4"
-      memory: 8Gi
-    projectRole: admin
+    namespaces:
+      - name: team-1-namespace
+        projectRole: admin
+        networkPolicy:
+          enabled: true
+        resourceQuota:
+          enabled: true
+          cpu: "4"
+          memory: 8Gi
+# Team 2
   - name: team2
-    namespace: team-2-namespace
-    networkPolicy:
-      enabled: true
-    resourceQuota:
-      enabled: true
-      cpu: "1"
-      memory: 2Gi
-    projectRole: edit
+    namespaces:
+      - name: team-2-namespace
+        projectRole: admin
+        networkPolicy:
+          enabled: true
+        resourceQuota:
+          enabled: true
+          cpu: "2"
+          memory: 6Gi
+
+      - name: team-2-namespace-2
+        projectRole: edit
+        networkPolicy:
+          enabled: true
+        resourceQuota:
+          enabled: false
+
+      - name: team-2-namespace-3
+        projectRole: admin
+        networkPolicy:
+          enabled: false
+        resourceQuota:
+          enabled: false
+# Team 3
   - name: team3
-    namespace: team-3-namespace
-    networkPolicy:
-      enabled: false
-    resourceQuota:
-      enabled: false
+    namespaces:
+      - name: team-3-namespace
+        projectRole: edit
+        networkPolicy:
+          enabled: true
+        resourceQuota:
+          enabled: true
+          cpu: "2"
+          memory: 4Gi
 

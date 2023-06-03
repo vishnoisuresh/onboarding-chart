@@ -1,16 +1,19 @@
 {{- range .Values.teams }}
+{{- $teamName := .name }}
+{{- range .namespaces }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: {{ .name }}-{{ .projectRole | default "admin" }}-rolebinding
-  namespace: {{ .namespace }}
+  name: {{ $teamName }}-{{ .projectRole | default "admin" }}-rolebinding
+  namespace: {{ .name }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: {{ .projectRole | default "admin" }}
 subjects:
   - kind: Group
-    name: {{ .name }}
+    name: {{ $teamName }}
     apiGroup: rbac.authorization.k8s.io
+{{- end }}
 {{- end }}

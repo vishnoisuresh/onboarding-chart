@@ -1,11 +1,13 @@
 {{- range .Values.teams }}
+{{- $teamName := .name }}
+{{- range .namespaces }}
 {{- if and (hasKey . "networkPolicy") (and (hasKey .networkPolicy "enabled") .networkPolicy.enabled) }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ .name }}-deny-by-default
-  namespace: {{ .namespace }}
+  name: {{ $teamName }}-deny-by-default
+  namespace: {{ .name }}
 spec:
   podSelector:
     ingress: []
@@ -13,13 +15,14 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ .name }}-allow-same-namespace
-  namespace: {{ .namespace }}
+  name: {{ $teamName }}-allow-same-namespace
+  namespace: {{ .name }}
 spec:
   podSelector:
     ingress:
       - from:
         - podSelector: {}
+{{- end }}
 {{- end }}
 {{- end }}
 

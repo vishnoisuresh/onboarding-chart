@@ -1,15 +1,20 @@
 {{- range .Values.teams }}
+{{- $teamName := .name }}
+{{- range .namespaces }}
 {{- if and (hasKey . "resourceQuota") (and (hasKey .resourceQuota "enabled") .resourceQuota.enabled) }}
 ---
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: {{ .name }}-quota
-  namespace: {{ .namespace }}
+  name: {{ $teamName }}-quota
+  namespace: {{ .name }}
 spec:
   hard:
     cpu: {{ .resourceQuota.cpu }}
     memory: {{ .resourceQuota.memory }}
+  scopes:
+  - NotTerminating
+{{- end }}
 {{- end }}
 {{- end }}
 

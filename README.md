@@ -19,18 +19,19 @@ Teams are defined in the `values.yaml` file. Each team has the following propert
 - `projectRole`: The role assigned to the team in the cluster. If not specified, the default role is `admin`.
 
 ```bash
-| Parameter                   | Description                                  | Default |
-|-----------------------------|----------------------------------------------|---------|
-| teams                       | List of teams to create                      |   []    |
-| teams.name                  | Name of the team                             |         |
-| teams.namespace             | Name of the namespace to be created          |         |
-| teams.networkPolicy         | Network policy configuration for the team    |         |
-| teams.networkPolicy.enabled | True/False                                   | False   |
-| teams.resourceQuota         | Resource quota configuration for the team    |         |
-| teams.resourceQuota.enabled | True/False                                   | False   |
-| teams.resourceQuota.cpu     | CPU limit for the team                       |         |
-| teams.resourceQuota.memory  | Memory limit for the team                    |         |
-| teams.projectRole           | The role assigned to the team in the cluster | admin   |
+| Parameter                               | Description                                  | Default |
+|-----------------------------------------|----------------------------------------------|---------|
+| teams                                   | List of teams to create                      |   []    |
+| teams.name                              | Name of the team                             |         |
+| teams.namespaces                        | List of the namespaces to be created         |   []    |
+| teams.namespaces.name                   | Name of the namespace to be created          |         |
+| teams.namespaces.networkPolicy          | Network policy configuration for the team    |         |
+| teams.namespaces.networkPolicy.enabled  | True/False                                   |  False  |
+| teams.namespaces.resourceQuota          | Resource quota configuration for the team    |         |
+| teams.namespaces.resourceQuota.enabled  | True/False                                   |  False  |
+| teams.namespaces.resourceQuota.cpu      | CPU limit for the team                       |         |
+| teams.namespaces.resourceQuota.memory   | Memory limit for the team                    |         |
+| teams.namespaces.projectRole            | The role assigned to the team in the cluster |  admin  |
 ```
 
 ## Example Usage
@@ -38,21 +39,35 @@ To create a Teams Chart deployment with custom values, create a values.yaml file
 
 ```yaml
 teams:
-  - name: team1                  < The name of the team
-    namespace: team-1-namespace  < Name of the namespace being created
-    networkPolicy:               < Enabled or not. Creates default networkPolicies. Default = false
-      enabled: true
-    resourceQuota:               < Enabled or not. Creates resourceQuotas for the namespace. Default = false
-      enabled: true
-      cpu: "4"
-      memory: 8Gi
-    projectRole: admin           < ClusterRole assigned to the team. Default = admin
+# Team 1
+  - name: team1                     <--- The name of the team
+    namespaces:
+      - name: team-1-namespace      <--- Name of the namespace being created
+        projectRole: admin          <--- ClusterRole assigned to the team. Default = admin   
+        networkPolicy:              <--- Enabled or not. Creates default networkPolicies. Default = false
+          enabled: true
+        resourceQuota:              <--- Enabled or not. Creates resourceQuotas for the namespace. Default = false
+          enabled: true
+          cpu: "4"
+          memory: 8Gi
+# Team 2
   - name: team2
-    namespace: team-2-namespace
-    networkPolicy:
-      enabled: false
-    resourceQuota:
-      enabled: false
+    namespaces:
+      - name: team-2-namespace
+        projectRole: admin
+        networkPolicy:
+          enabled: true
+        resourceQuota:
+          enabled: true
+          cpu: "2"
+          memory: 6Gi
+
+      - name: team-2-namespace-2
+        projectRole: edit
+        networkPolicy:
+          enabled: true
+        resourceQuota:
+          enabled: false
 ```
 ## Created Resources
 
@@ -60,20 +75,20 @@ The following resources will be created for each team based on their configurati
 
 ### Namespace
 
-A namespace will be created for each team. The namespace name will be based on the team's `namespace` property.
+One or more namespaces will be created for each team. The namespace name will be based on the team's `namespaces.name` property.
 
 ### Network Policies
 
-If the `networkPolicy` is set to `enabled` for a team, the following network policies will be created:
+If the `networkPolicy` is set to `enabled` for a namespace, the following network policies will be created:
 
-- A network policy named `<team-name>-deny-by-default` in the team's namespace. This policy denies all incoming traffic by default.
-- A network policy named `<team-name>-allow-same-namespace` in the team's namespace. This policy allows incoming traffic from any pod within the same namespace.
+- A network policy named `<team-name>-deny-by-default` in the selected namespace. This policy denies all incoming traffic by default.
+- A network policy named `<team-name>-allow-same-namespace` in the selected namespace. This policy allows incoming traffic from any pod within the same namespace.
 
 [More information](https://docs.openshift.com/container-platform/latest/networking/network_policy/creating-network-policy.html#nw-networkpolicy-create-cli_creating-network-policy)
 ### Resource Quotas
 
-If the `resourceQuota.enabled` is set to `true` for a team, a resource quota will be created in the team's namespace. The resource quota will have the CPU and memory limits specified in the team's configuration.
+If the `resourceQuota.enabled` is set to `true` for a namespace, a resource quota will be created in the selected namespace. The resource quota will have the CPU and memory limits specified in the namespace configuration.
 
 ### Role Bindings
 
-A role binding will be created for each team, assigning them a role in the cluster. If the `projectRole` is not specified for a team, the default role assigned is `admin`. The role binding name will be `<team-name>-<project-role>-rolebinding`.
+A role binding will be created for each namespace, assigning the team a role in the cluster. If the `projectRole` is not specified for a namespace, the default role assigned is `admin`. The role binding name will be `<team-name>-<project-role>-rolebinding`.
