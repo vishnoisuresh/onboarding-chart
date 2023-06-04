@@ -10,8 +10,9 @@ This Helm chart deploys resources for multiple teams in a cluster. Each team can
 Teams are defined in the `values.yaml` file. Each team has the following properties:
 
 - `name`: The name of the team.
-- `namespace`: The name of the namespace to be generated.
-- `networkPolicy`: The configuration for network policies. It can be set to `enabled` or `disabled`. When set to `enabled`, network policies will be created for the team. When set to `disabled`, no network policies will be created.
+- `namespaces`: A list with the namespaces to be generated.
+- `networkPolicy`: The configuration for network policies. It has the following properties:
+  - `enabled`: A boolean value indicating whether network policies should be created or not. [Read more here](#network-policies)
 - `resourceQuota`: The configuration for resource quotas. It has the following properties:
   - `enabled`: A boolean value indicating whether resource quotas should be created for the team. When set to `true`, resource quotas will be created. When set to `false`, no resource quotas will be created.
   - `cpu`: The CPU limit for the team's resource quota.
