@@ -82,8 +82,13 @@ One or more namespaces will be created for each team. The namespace name will be
 
 If the `networkPolicy` is set to `enabled` for a namespace, the following network policies will be created:
 
-- A network policy named `<team-name>-deny-by-default` in the selected namespace. This policy denies all incoming traffic by default.
-- A network policy named `<team-name>-allow-same-namespace` in the selected namespace. This policy allows incoming traffic from any pod within the same namespace.
+| Network Policy Name              | Purpose                                       |
+|----------------------------------|-----------------------------------------------|
+| `<team-name>-deny-by-default`    | Denies all incoming traffic by default        |
+| `<team-name>-allow-same-namespace` | Allows incoming traffic from the same namespace, enabling communication between pods in the same namespace |
+| `<team-name>-allow-from-ingress`  | Allows incoming traffic from the `openshift-ingress` namespace, enabling external clients to access services exposed via the Ingress Controller |
+| `<team-name>-allow-from-monitoring` | Allows incoming traffic from the `openshift-monitoring` namespace, enabling the monitoring system to scrape metrics and data from the pods |
+
 
 [More information](https://docs.openshift.com/container-platform/latest/networking/network_policy/creating-network-policy.html#nw-networkpolicy-create-cli_creating-network-policy)
 ### Resource Quotas

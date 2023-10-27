@@ -22,6 +22,36 @@ spec:
     ingress:
       - from:
         - podSelector: {}
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $teamName }}-allow-from-openshift-ingress
+namespace: {{ .name }}
+spec:
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          network.openshift.io/policy-group: ingress
+  podSelector: {}
+  policyTypes:
+  - Ingress
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ $teamName }}-allow-from-openshift-monitoring
+namespace: {{ .name }}
+spec:
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          network.openshift.io/policy-group=monitoring
+  podSelector: {}
+  policyTypes:
+  - Ingress
 {{- end }}
 {{- end }}
 {{- end }}
