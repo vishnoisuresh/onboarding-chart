@@ -48,7 +48,7 @@ spec:
   - from:
     - namespaceSelector:
         matchLabels:
-          network.openshift.io/policy-group=monitoring
+          network.openshift.io/policy-group: monitoring
   podSelector: {}
   policyTypes:
   - Ingress
