@@ -6,27 +6,27 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ $teamName }}-deny-by-default
+  name: {{ .name }}-deny-by-default
   namespace: {{ .name }}
 spec:
-  podSelector:
-    ingress: []
+  podSelector: {}
+  ingress: []
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ $teamName }}-allow-same-namespace
+  name: {{ .name }}-allow-same-namespace
   namespace: {{ .name }}
 spec:
-  podSelector:
-    ingress:
-      - from:
-        - podSelector: {}
+  podSelector: {}
+  ingress:
+  - from:
+    - podSelector: {}
 ---
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ $teamName }}-allow-from-openshift-ingress
+  name: {{ .name }}-allow-from-openshift-ingress
 namespace: {{ .name }}
 spec:
   ingress:
@@ -41,7 +41,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ $teamName }}-allow-from-openshift-monitoring
+  name: {{ .name }}-allow-from-openshift-monitoring
 namespace: {{ .name }}
 spec:
   ingress:

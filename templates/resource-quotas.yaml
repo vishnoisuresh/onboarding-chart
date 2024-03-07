@@ -6,7 +6,7 @@
 apiVersion: v1
 kind: ResourceQuota
 metadata:
-  name: {{ $teamName }}-quota
+  name: {{ .name }}-quota
   namespace: {{ .name }}
 spec:
   hard:
